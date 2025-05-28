@@ -1,5 +1,5 @@
-import 'package:todo/domain/entities/todo_entity.dart';
-import 'package:todo/domain/repositories/todo_repository.dart';
+import 'package:todo/features/todo/domain/entities/todo_entity.dart';
+import 'package:todo/features/todo/domain/repositories/todo_repository.dart';
 
 class TodoUsecase {
   final TodoRepository repository;

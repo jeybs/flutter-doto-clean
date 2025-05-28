@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/domain/entities/todo_entity.dart';
-import 'package:todo/domain/usecases/todo_usecase.dart';
+import 'package:todo/features/todo/domain/entities/todo_entity.dart';
+import 'package:todo/features/todo/domain/usecases/todo_usecase.dart';
 
 class TodoCubit extends Cubit<List<TodoEntity>> {
   final TodoUsecase todoUsecase;

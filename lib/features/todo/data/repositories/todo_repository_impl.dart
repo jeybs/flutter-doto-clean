@@ -1,7 +1,9 @@
-import 'package:todo/data/data_source/todo_local_datasource.dart';
-import 'package:todo/data/models/sql_todo.dart';
-import 'package:todo/domain/entities/todo_entity.dart';
-import 'package:todo/domain/repositories/todo_repository.dart';
+
+
+import 'package:todo/features/todo/data/data_sources/todo_local_datasource.dart';
+import 'package:todo/features/todo/data/models/todo_model.dart';
+import 'package:todo/features/todo/domain/entities/todo_entity.dart';
+import 'package:todo/features/todo/domain/repositories/todo_repository.dart';
 
 class TodoRepositoryImpl implements TodoRepository {
   final TodoLocalDatasource localDataSource;
@@ -10,7 +12,7 @@ class TodoRepositoryImpl implements TodoRepository {
 
   @override
   Future<void> addTodo(TodoEntity newTodo) async {
-    await localDataSource.addTodo(TodoSql.fromJson(newTodo.toJson()));
+    await localDataSource.addTodo(TodoModel.fromJson(newTodo.toJson()));
   }
 
   @override
@@ -26,6 +28,6 @@ class TodoRepositoryImpl implements TodoRepository {
 
   @override
   Future<void> updateTodo(TodoEntity todo) async {
-    await localDataSource.updateTodo(TodoSql.fromJson(todo.toJson()));
+    await localDataSource.updateTodo(TodoModel.fromJson(todo.toJson()));
   }
 }

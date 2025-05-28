@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/domain/entities/todo_entity.dart';
-import 'package:todo/presentation/todo_cubit.dart';
+import 'package:todo/features/todo/domain/entities/todo_entity.dart';
+import 'package:todo/features/todo/presentation/todo_cubit.dart';
 
 class TodoView extends StatelessWidget {
   const TodoView({super.key});

@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:todo/core/constants/database_constants.dart';
-import 'package:todo/data/data_source/todo_local_datasource.dart';
-import 'package:todo/data/models/sql_todo.dart';
+import 'package:todo/features/todo/data/data_sources/todo_local_datasource.dart';
+import 'package:todo/features/todo/data/models/todo_model.dart';
 
 class TodoLocalDatasourceImpl implements TodoLocalDatasource {
   final Database db;
@@ -9,7 +9,7 @@ class TodoLocalDatasourceImpl implements TodoLocalDatasource {
   const TodoLocalDatasourceImpl({required this.db});
 
   @override
-  Future<void> addTodo(TodoSql newTodo) async {
+  Future<void> addTodo(TodoModel newTodo) async {
     try {
       await db.transaction((txn) async {
         await txn.rawInsert(
@@ -30,18 +30,18 @@ class TodoLocalDatasourceImpl implements TodoLocalDatasource {
   }
 
   @override
-  Future<List<TodoSql>> getTodos() async {
+  Future<List<TodoModel>> getTodos() async {
     var todosList = await db.query(DbConstants.tableTodo, orderBy: 'id');
 
-    List<TodoSql> todos = todosList.isNotEmpty
-        ? todosList.map((e) => TodoSql.fromJson(e)).toList()
+    List<TodoModel> todos = todosList.isNotEmpty
+        ? todosList.map((e) => TodoModel.fromJson(e)).toList()
         : [];
 
     return todos;
   }
 
   @override
-  Future<void> updateTodo(TodoSql todo) async {
+  Future<void> updateTodo(TodoModel todo) async {
     await db.transaction((txn) async {
       int resp = await txn.update(
           DbConstants.tableTodo,
