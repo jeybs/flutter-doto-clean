@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/domain/models/todo.dart';
+import 'package:todo/domain/entities/todo_entity.dart';
 import 'package:todo/presentation/todo_cubit.dart';
 
 class TodoView extends StatelessWidget {
@@ -17,7 +17,7 @@ class TodoView extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
-      body: BlocBuilder<TodoCubit, List<Todo>>(
+      body: BlocBuilder<TodoCubit, List<TodoEntity>>(
         builder: (context, todos) {
           return ListView.builder(
               itemCount: todos.length,

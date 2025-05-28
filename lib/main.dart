@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:todo/core/database/app_database.dart';
-import 'package:todo/data/repository/sql_todo_repo.dart';
-import 'package:todo/domain/repository/todo_repo.dart';
+import 'package:todo/data/data_source/todo_local_datasource.dart';
+import 'package:todo/data/data_source/todo_local_datasource_impl.dart';
+import 'package:todo/domain/repositories/todo_repository.dart';
+import 'package:todo/domain/usecases/todo_usecase.dart';
 import 'package:todo/presentation/todo_page.dart';
 
 import 'core/locator/locator.dart';
+import 'data/repositories/todo_repository_impl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,22 +17,27 @@ void main() async {
   final appDatabase = locator<AppDatabase>();
   await appDatabase.init();
 
-  SqlTodoRepo sqlTodoRepo = SqlTodoRepo(db: appDatabase.db);
+  // Register Local Data Source
+  locator.registerLazySingleton<TodoLocalDatasource>(() => TodoLocalDatasourceImpl(db: appDatabase.db));
 
-  runApp(MyApp(todoRepo: sqlTodoRepo,));
+  // Register Repository
+  locator.registerLazySingleton<TodoRepository>(() => TodoRepositoryImpl(localDataSource: locator<TodoLocalDatasource>()));
+
+  // Register UseCases
+  locator.registerLazySingleton(() => TodoUsecase(repository: locator<TodoRepository>()));
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // database injection through the app
-  final TodoRepo todoRepo;
 
-  const MyApp({super.key, required this.todoRepo});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: TodoPage(todoRepo: todoRepo),
+      home: TodoPage(),
     );
   }
 }

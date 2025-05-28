@@ -1,40 +1,41 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/domain/models/todo.dart';
-import 'package:todo/domain/repository/todo_repo.dart';
+import 'package:todo/domain/entities/todo_entity.dart';
+import 'package:todo/domain/usecases/todo_usecase.dart';
 
-class TodoCubit extends Cubit<List<Todo>> {
-  final TodoRepo todoRepo;
+class TodoCubit extends Cubit<List<TodoEntity>> {
+  final TodoUsecase todoUsecase;
 
-  TodoCubit(this.todoRepo) : super([]) {
+  TodoCubit(this.todoUsecase) : super([]) {
     loadTodos();
   }
 
   // Load
   Future<void> loadTodos() async {
-    final todoList = await todoRepo.getTodos();
+    final todoList = await todoUsecase.getTodos();
     emit(todoList);
   }
 
   // Add
   Future<void> addTodo(String text) async {
-    final newTodo = Todo(id: DateTime.now().millisecondsSinceEpoch, text: text);
-    await todoRepo.addTodo(newTodo);
+    final newTodo = TodoEntity(id: DateTime.now().millisecondsSinceEpoch, text: text);
+    await todoUsecase.insertTodo(newTodo);
 
     loadTodos();
   }
 
 // Delete
-  Future<void> deleteTodo(Todo todo) async {
-    await todoRepo.deleteTodo(todo);
+  Future<void> deleteTodo(TodoEntity todo) async {
+    await todoUsecase.deleteTodo(todo.id!);
 
     loadTodos();
   }
 
 // Toggle
-  Future<void> toggleCompletion(Todo todo) async {
+  Future<void> toggleCompletion(TodoEntity todo) async {
+    print("OLD: ${todo.isCompleted}");
     final updatedTodo = todo.toggleCompletion();
 
-    await todoRepo.updateTodo(updatedTodo);
+    await todoUsecase.toggleTodo(updatedTodo);
 
     loadTodos();
   }
